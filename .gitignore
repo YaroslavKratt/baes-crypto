@@ -1,0 +1,33 @@
+# Ignore Gradle project-specific cache directory
+.gradle
+.idea
+.gitattributes
+.DS_Store
+.project
+.settings
+
+# Ignore Gradle build output directory
+build
+
+*target*
+*.war
+*.ear
+*.class
+*.gitkeep
+
+# eclipse specific git ignore
+*.pydevproject
+.project
+.metadata
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
+
