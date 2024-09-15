@@ -1,11 +1,15 @@
 package kpi.pti;
 
-public class App {
-    public String getGreeting() {
-        return "Hello World!";
-    }
+import kpi.pti.service.CSVService;
 
-    public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+public class App {
+
+  public static void main(String[] args) {
+    try {
+      CSVService.getKeysProbabilities();
+      CSVService.getOpenTextsProbabilities();
+    } catch (Exception e) {
+      System.out.printf("Something went wrong: %s\n", e.getMessage());
     }
+  }
 }

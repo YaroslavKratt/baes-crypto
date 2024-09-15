@@ -8,9 +8,8 @@ plugins {
     id("io.freefair.lombok")
 }
 
-
 dependencies {
-
+    implementation("com.opencsv:opencsv:5.9")
 }
 
 java {
@@ -20,9 +19,16 @@ java {
 }
 
 application {
-    mainClass = "org.example.App"
+    mainClass = "kpi.pti.App"
 }
 
 tasks.named<Test>("test") {
     useJUnitPlatform()
+}
+
+configure<com.diffplug.gradle.spotless.SpotlessExtension> {
+    java {
+        googleJavaFormat()
+        removeUnusedImports()
+    }
 }
