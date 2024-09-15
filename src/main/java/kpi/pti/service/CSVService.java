@@ -6,18 +6,19 @@ import kpi.pti.utils.CSVReaderUtil;
 
 public class CSVService {
 
-  public static List<Double> getOpenTextsProbabilities() {
+  public static Double[] getOpenTextsProbabilities() {
     return CSVReaderUtil.readAllProbabilities()
         .map(List::getFirst)
-        .map(strings -> Arrays.stream(strings).map(Double::parseDouble).toList())
+        .map(strings -> Arrays.stream(strings).map(Double::parseDouble).toArray(Double[]::new))
         .orElseThrow(
             () -> new RuntimeException("Failed to read texts probabilities from CSV file"));
   }
 
-  public static List<Double> getKeysProbabilities() {
+  public static Double[] getKeysProbabilities() {
     return CSVReaderUtil.readAllProbabilities()
         .map(List::getLast)
-        .map(strings -> Arrays.stream(strings).map(Double::parseDouble).toList())
-        .orElseThrow(() -> new RuntimeException("Failed to read keys probabilities from CSV file"));
+        .map(strings -> Arrays.stream(strings).map(Double::parseDouble).toArray(Double[]::new))
+        .orElseThrow(
+            () -> new RuntimeException("Failed to read texts probabilities from CSV file"));
   }
 }

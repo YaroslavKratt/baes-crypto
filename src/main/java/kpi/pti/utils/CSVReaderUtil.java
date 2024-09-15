@@ -14,8 +14,16 @@ public class CSVReaderUtil {
   private static final String TABLE_PATH = "table_11.csv";
 
   public static Optional<List<String[]>> readAllProbabilities() {
+    return readFromFile(PROB_PATH);
+  }
+
+  public static Optional<List<String[]>> readAllTable() {
+    return readFromFile(TABLE_PATH);
+  }
+
+  private static Optional<List<String[]>> readFromFile(String tablePath) {
     try {
-      return Optional.of(readAllLines(getPathFromFileName(PROB_PATH)));
+      return Optional.of(readAllLines(getPathFromFileName(tablePath)));
     } catch (Exception e) {
       System.out.printf(
           "Something went wrong while reading probabilities from file: %s\n", e.getMessage());
