@@ -8,6 +8,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 public class ProbabilityCalculationService {
 
+  // P(C)
   public Map<Integer, Double> calculateCypherTextProbabilities(
       Double[] openTextsProbabilities, Double[] keysProbabilities, Integer[][] cypherTable) {
     Map<Integer, Double> cypherTexToProbability = new HashMap<>();
@@ -32,6 +33,7 @@ public class ProbabilityCalculationService {
     return cypherTexToProbability;
   }
 
+  // P(M,C)
   public Map<Pair<Integer, Integer>, Double> calculateOpenTextEncryptedToCypherTextProbabilities(
       Double[] openTextsProbabilities, Double[] keysProbabilities, Integer[][] cypherTable) {
     Map<Integer, List<Pair<Integer, Integer>>> cypherTextToOpenTextsAndKeys =
@@ -60,6 +62,22 @@ public class ProbabilityCalculationService {
     }
 
     return openTextEncryptedToCypherTextProbabilities;
+  }
+
+  // P(M/C) todo verify the results!
+  public static Map<Pair<Integer, Integer>, Double>
+      calculateOpenTextDependentOnCypherTextProbability(
+          Map<Integer, Double> cypherTextProbabilities,
+          Map<Pair<Integer, Integer>, Double> openTextEncryptedToCypherTextProbabilities) {
+    Map<Pair<Integer, Integer>, Double> openTextDependentOnCypherTextProbabilities =
+        new HashMap<>();
+    openTextEncryptedToCypherTextProbabilities.forEach(
+        (openTextIdAndCyperText, MCProbability) -> {
+          var probability =
+              MCProbability / cypherTextProbabilities.get(openTextIdAndCyperText.getRight());
+          openTextDependentOnCypherTextProbabilities.put(openTextIdAndCyperText, probability);
+        });
+    return openTextDependentOnCypherTextProbabilities;
   }
 
   private static Map<Integer, List<Pair<Integer, Integer>>> getCypherTextToOpenTextsAndKeys(
