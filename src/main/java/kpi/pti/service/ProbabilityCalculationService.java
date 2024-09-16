@@ -4,23 +4,38 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.IntStream;
 import org.apache.commons.lang3.tuple.Pair;
 
 public class ProbabilityCalculationService {
 
-  public Double calculateCypherTextProbabilities(
-      Double[] openTextsProbabilities, Double[] keysProbabilities) {
+  public Map<Integer, Double> calculateCypherTextProbabilities(
+      Double[] openTextsProbabilities, Double[] keysProbabilities, Integer[][] cypherTable) {
+    Map<Integer, Double> cypherTexToProbability = new HashMap<>();
+    for (int i = 0; i < keysProbabilities.length; i++) {
+      for (int j = 0; j < openTextsProbabilities.length; j++) {
+        var keysIndex = i;
+        var openTextsIndex = j;
+        cypherTexToProbability.compute(
+            cypherTable[i][j],
+            (key, probability) -> {
+              if (probability == null) {
+                probability = openTextsProbabilities[openTextsIndex] * keysProbabilities[keysIndex];
+              } else {
+                probability +=
+                    openTextsProbabilities[openTextsIndex] * keysProbabilities[keysIndex];
+              }
 
-    return IntStream.range(0, openTextsProbabilities.length)
-        .mapToDouble(i -> openTextsProbabilities[i] * keysProbabilities[i])
-        .sum();
+              return probability;
+            });
+      }
+    }
+    return cypherTexToProbability;
   }
 
   public Map<Pair<Integer, Integer>, Double> calculateOpenTextEncryptedToCypherTextProbabilities(
       Double[] openTextsProbabilities, Double[] keysProbabilities, Integer[][] cypherTable) {
-    Map<Integer, List<Pair<Integer, Integer>>> cypherTextToOpenTextsAndKeys = getCypherTextToOpenTextsAndKeys(
-        cypherTable);
+    Map<Integer, List<Pair<Integer, Integer>>> cypherTextToOpenTextsAndKeys =
+        getCypherTextToOpenTextsAndKeys(cypherTable);
 
     Map<Pair<Integer, Integer>, Double> openTextEncryptedToCypherTextProbabilities =
         new HashMap<>();
@@ -34,26 +49,11 @@ public class ProbabilityCalculationService {
                         keyIndexAndOpenTextIndex ->
                             keyIndexAndOpenTextIndex.getRight().equals(openTextIndex))
                     .map(
-                        keyIndexAndOpenTextIndex -> {
-                          System.out.printf(
-                              "key probability %s \n",
-                              keysProbabilities[keyIndexAndOpenTextIndex.getLeft()]);
-                          System.out.printf(
-                              "open text probability %s\n",
-                              openTextsProbabilities[keyIndexAndOpenTextIndex.getRight()]);
-                          System.out.printf(
-                              "P*K %s\n",
-                              keysProbabilities[keyIndexAndOpenTextIndex.getLeft()]
-                                  * openTextsProbabilities[keyIndexAndOpenTextIndex.getRight()]);
-                          return keysProbabilities[keyIndexAndOpenTextIndex.getLeft()]
-                              * openTextsProbabilities[keyIndexAndOpenTextIndex.getRight()];
-                        })
+                        keyIndexAndOpenTextIndex ->
+                            keysProbabilities[keyIndexAndOpenTextIndex.getLeft()]
+                                * openTextsProbabilities[keyIndexAndOpenTextIndex.getRight()])
                     .mapToDouble(Double::doubleValue)
                     .sum();
-            System.out.printf(
-                "Result openTIndex %s,cypherText %s, probability %s \n",
-                openTextIndex, cyperText.toString(), probability);
-            System.out.println("++++++++++");
             openTextEncryptedToCypherTextProbabilities.put(
                 Pair.of(openTextIndex, cyperText), probability);
           });

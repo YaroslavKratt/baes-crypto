@@ -13,6 +13,11 @@ public class App {
           CSVService.getOpenTextsProbabilities(),
           CSVService.getKeysProbabilities(),
           CSVService.getCypherTable());
+
+      probabilityCalculationService.calculateCypherTextProbabilities(
+          CSVService.getOpenTextsProbabilities(),
+          CSVService.getKeysProbabilities(),
+          CSVService.getCypherTable());
     } catch (Exception e) {
       System.out.printf("Something went wrong: %s\n", e.getMessage());
       System.out.printf("Exception: %s\n", e);
