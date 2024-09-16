@@ -8,10 +8,14 @@ public class App {
   public static void main(String[] args) {
     try {
       var probabilityCalculationService = new ProbabilityCalculationService();
-      probabilityCalculationService.calculateKeyAndOpenTextProbabilities(
-          CSVService.getOpenTextsProbabilities(), CSVService.getKeysProbabilities());
+
+      probabilityCalculationService.calculateOpenTextEncryptedToCypherTextProbabilities(
+          CSVService.getOpenTextsProbabilities(),
+          CSVService.getKeysProbabilities(),
+          CSVService.getCypherTable());
     } catch (Exception e) {
       System.out.printf("Something went wrong: %s\n", e.getMessage());
+      System.out.printf("Exception: %s\n", e);
     }
   }
 }

@@ -40,6 +40,6 @@ public class CSVReaderUtil {
   }
 
   private static Path getPathFromFileName(String fileName) throws URISyntaxException {
-    return Paths.get(ClassLoader.getSystemResource(PROB_PATH).toURI());
+    return Paths.get(ClassLoader.getSystemResource(fileName).toURI());
   }
 }
