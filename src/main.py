@@ -17,29 +17,27 @@ def main():
   for row in cypher_table:
     print(row)
 
-
   cypher_text_probabilities = ProbabilityCalculationService.calculate_cypher_text_probabilities(
-    open_text_probabilities, keys_probabilities, cypher_table
-  )
+    open_text_probabilities, keys_probabilities, cypher_table)
   print("##################### P(C):\n")
   for cypher_text, probability in cypher_text_probabilities.items():
     print(f"Cypher Text: {cypher_text}, Probability: {probability}")
 
-  # Calculate open text encrypted to cypher text probabilities
   open_text_encrypted_to_cypher_text_probabilities = ProbabilityCalculationService.calculate_open_text_encrypted_to_cypher_text_probabilities(
-    open_text_probabilities, keys_probabilities, cypher_table
-  )
+    open_text_probabilities, keys_probabilities, cypher_table)
   print("##################### P(M, C):\n")
-  for (open_text, cypher_text), probability in open_text_encrypted_to_cypher_text_probabilities.items():
-    print(f"Open Text: {open_text}, Cypher Text: {cypher_text}, Probability: {probability}")
+  for (open_text,
+       cypher_text), probability in open_text_encrypted_to_cypher_text_probabilities.items():
+    print(
+      f"Open Text: {open_text}, Cypher Text: {cypher_text}, Probability: {probability}")
 
-  # Calculate open text dependent on cypher text probabilities
   open_text_dependent_on_cypher_text_probabilities = ProbabilityCalculationService.calculate_open_text_dependent_on_cypher_text_probability(
-    cypher_text_probabilities, open_text_encrypted_to_cypher_text_probabilities
-  )
-  print("##################### P(M, C): P(M|C):\n")
-  for (open_text, cypher_text), probability in open_text_dependent_on_cypher_text_probabilities.items():
-    print(f"Open Text: {open_text}, Cypher Text: {cypher_text}, Probability: {probability}")
+    cypher_text_probabilities, open_text_encrypted_to_cypher_text_probabilities)
+  print("##################### P(M|C):\n")
+  for (open_text,
+       cypher_text), probability in open_text_dependent_on_cypher_text_probabilities.items():
+    print(
+      f"Open Text: {open_text}, Cypher Text: {cypher_text}, Probability: {probability}")
 
 
 if __name__ == "__main__":
