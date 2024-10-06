@@ -43,6 +43,12 @@ def main():
   ExcelUtil.write_stochastic_matrix_to_excel(
     open_text_dependent_on_cypher_text_probabilities)
 
+  deterministic_loss = ProbabilityCalculationService.calculate_deterministic_loss(
+    open_text_dependent_on_cypher_text_probabilities,
+    open_text_encrypted_to_cypher_text_probabilities, list(range(20)),
+    list(range(20)))
+  print(f"Deterministic loss:{deterministic_loss}")
+
 
 if __name__ == "__main__":
   main()

@@ -55,6 +55,27 @@ class ProbabilityCalculationService:
     return open_text_dependent_on_cypher_text_probabilities
 
   @staticmethod
+  def calculate_deterministic_loss(
+      open_text_dependent_on_cypher_text_probabilities,
+      open_text_encrypted_to_cypher_text_probabilities, open_texts,
+      cypher_texts):
+    total_loss = 0
+
+    for cypher_text in cypher_texts:
+      # Find the open text with the maximum P(M|C) for deterministic function
+      max_prob_open_text = max(open_texts, key=lambda
+          M: open_text_dependent_on_cypher_text_probabilities.get(
+        (M, cypher_text)))
+
+      for open_text in open_texts:
+        prob_m_c = open_text_encrypted_to_cypher_text_probabilities.get(
+          (open_text, cypher_text))
+        if open_text != max_prob_open_text:
+          total_loss += prob_m_c
+
+    return total_loss
+
+  @staticmethod
   def get_cypher_text_to_open_texts_and_keys(cypher_table):
     cypher_text_to_open_texts_and_keys = defaultdict(list)
 
