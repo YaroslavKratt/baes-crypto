@@ -16,7 +16,7 @@ class ProbabilityCalculationService:
 
     return dict(cypher_text_to_probability)
 
-  # P(M, C)
+  # P(M,C)
   @staticmethod
   def calculate_open_text_encrypted_to_cypher_text_probabilities(
       open_texts_probabilities, keys_probabilities, cypher_table):
@@ -55,7 +55,7 @@ class ProbabilityCalculationService:
     return open_text_dependent_on_cypher_text_probabilities
 
   @staticmethod
-  def calculate_deterministic_loss(
+  def calculate_average_deterministic_loss(
       open_text_dependent_on_cypher_text_probabilities,
       open_text_encrypted_to_cypher_text_probabilities, open_texts,
       cypher_texts):
@@ -72,6 +72,25 @@ class ProbabilityCalculationService:
           (open_text, cypher_text))
         if open_text != max_prob_open_text:
           total_loss += prob_m_c
+
+    return total_loss
+
+
+  @staticmethod
+  def calculate_average_stochastic_loss(open_text_dependent_on_cypher_text_probabilities, open_text_encrypted_to_cypher_text_probabilities, open_texts, cypher_texts):
+    total_loss = 0
+
+    for cypher_text in cypher_texts:
+      for open_text in open_texts:
+        prob_m_c = open_text_encrypted_to_cypher_text_probabilities.get((open_text, cypher_text))
+
+        loss_for_m = 0
+        for other_open_text in open_texts:
+          if other_open_text != open_text:
+            #L(M,C) = sum (P(M'|C))
+            loss_for_m += open_text_dependent_on_cypher_text_probabilities.get((other_open_text, cypher_text))
+        #P(M,C) * L(M,C)
+        total_loss += prob_m_c * loss_for_m
 
     return total_loss
 

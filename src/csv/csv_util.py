@@ -3,8 +3,8 @@ from pathlib import Path
 
 
 class CSVReaderUtil:
-  PROB_PATH = "../test_data/prob_11.csv"
-  TABLE_PATH = "../test_data/table_11.csv"
+  PROB_PATH = "../test_data/prob_10.csv"
+  TABLE_PATH = "../test_data/table_10.csv"
 
   @staticmethod
   def read_all_probabilities():
