@@ -1,4 +1,5 @@
 from src.csv.csv_service import CSVService
+from src.exel_util import ExcelUtil
 from src.probability_calculation import ProbabilityCalculationService
 
 
@@ -38,6 +39,9 @@ def main():
        cypher_text), probability in open_text_dependent_on_cypher_text_probabilities.items():
     print(
       f"Open Text: {open_text}, Cypher Text: {cypher_text}, Probability: {probability}")
+
+  ExcelUtil.write_stochastic_matrix_to_excel(
+    open_text_dependent_on_cypher_text_probabilities)
 
 
 if __name__ == "__main__":
